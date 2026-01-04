@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/akbar/go-commerce-api/internal/auth/dto"
-	"github.com/akbar/go-commerce-api/internal/auth/service"
-	"github.com/akbar/go-commerce-api/internal/common/response"
+	"github.com/akbarwjyy/go-commerce-api/internal/auth/dto"
+	"github.com/akbarwjyy/go-commerce-api/internal/auth/service"
+	"github.com/akbarwjyy/go-commerce-api/internal/common/response"
 	"github.com/gin-gonic/gin"
 )
 
