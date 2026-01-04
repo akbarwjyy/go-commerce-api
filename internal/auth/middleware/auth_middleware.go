@@ -3,9 +3,9 @@ package middleware
 import (
 	"strings"
 
-	"github.com/akbar/go-commerce-api/internal/auth/service"
-	"github.com/akbar/go-commerce-api/internal/common/response"
-	"github.com/akbar/go-commerce-api/pkg/utils"
+	"github.com/akbarwjyy/go-commerce-api/internal/auth/service"
+	"github.com/akbarwjyy/go-commerce-api/internal/common/response"
+	"github.com/akbarwjyy/go-commerce-api/pkg/utils"
 	"github.com/gin-gonic/gin"
 )
 
