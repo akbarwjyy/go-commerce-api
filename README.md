@@ -68,11 +68,12 @@ This project implements a Modular Monolith pattern - mimicking microservices bou
 GET /health
 ```
 
-### Auth (Coming Soon)
+### Auth
 ```
-POST /api/v1/auth/register
-POST /api/v1/auth/login
-POST /api/v1/auth/logout
+POST /api/v1/auth/register   - Register new user
+POST /api/v1/auth/login      - Login user
+POST /api/v1/auth/logout     - Logout (blacklist token)
+GET  /api/v1/auth/me         - Get current user profile (protected)
 ```
 
 ### Products (Coming Soon)
@@ -96,3 +97,11 @@ GET  /api/v1/orders/:id
 POST /api/v1/payments
 GET  /api/v1/payments/:id
 ```
+
+## User Roles
+
+| Role | Description |
+|------|-------------|
+| `user` | Default role, can browse products and make orders |
+| `seller` | Can manage own products |
+| `admin` | Full access to all resources |
