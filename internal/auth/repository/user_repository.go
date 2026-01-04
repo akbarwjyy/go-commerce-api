@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/akbar/go-commerce-api/internal/auth/entity"
+	"github.com/akbarwjyy/go-commerce-api/internal/auth/entity"
 	"gorm.io/gorm"
 )
 
