@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/akbar/go-commerce-api/pkg/config"
+	"github.com/akbarwjyy/go-commerce-api/pkg/config"
 	"github.com/redis/go-redis/v9"
 )
 
