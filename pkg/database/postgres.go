@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/akbar/go-commerce-api/pkg/config"
+	"github.com/akbarwjyy/go-commerce-api/pkg/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
