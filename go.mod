@@ -1,4 +1,4 @@
-module github.com/akbar/go-commerce-api
+module github.com/akbarwjyy/go-commerce-api
 
 go 1.25.5
 
