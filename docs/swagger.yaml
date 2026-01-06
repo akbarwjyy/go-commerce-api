@@ -1,0 +1,1439 @@
+basePath: /api/v1
+definitions:
+  github_com_akbarwjyy_go-commerce-api_internal_auth_dto.AuthResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_auth_dto.UserResponse'
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_auth_dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_auth_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_auth_dto.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse:
+    properties:
+      data: {}
+      error: {}
+      message:
+        example: Operation successful
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_order_dto.CheckoutRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderItemRequest'
+        minItems: 1
+        type: array
+      notes:
+        type: string
+      shipping_address:
+        type: string
+    required:
+    - items
+    - shipping_address
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderItemRequest:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderItemResponse:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: integer
+      subtotal:
+        type: number
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderListResponse:
+    properties:
+      limit:
+        type: integer
+      orders:
+        items:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderResponse'
+        type: array
+      page:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderItemResponse'
+        type: array
+      notes:
+        type: string
+      shipping_address:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_order_dto.UpdateOrderStatusRequest:
+    properties:
+      status:
+        enum:
+        - PAID
+        - SHIPPED
+        - COMPLETED
+        - CANCELLED
+        type: string
+    required:
+    - status
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_payment_dto.CreatePaymentRequest:
+    properties:
+      method:
+        enum:
+        - BANK_TRANSFER
+        - CREDIT_CARD
+        - E_WALLET
+        type: string
+      order_id:
+        type: integer
+    required:
+    - method
+    - order_id
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentCallbackRequest:
+    properties:
+      failed_reason:
+        type: string
+      status:
+        enum:
+        - SUCCESS
+        - FAILED
+        type: string
+      transaction_id:
+        type: string
+    required:
+    - status
+    - transaction_id
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentListResponse:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      payments:
+        items:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentResponse'
+        type: array
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentResponse:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      failed_reason:
+        type: string
+      id:
+        type: integer
+      method:
+        type: string
+      order_id:
+        type: integer
+      paid_at:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.CategoryResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.CreateCategoryRequest:
+    properties:
+      description:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+    required:
+    - name
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.CreateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      image_url:
+        type: string
+      name:
+        maxLength: 200
+        minLength: 2
+        type: string
+      price:
+        type: number
+      stock:
+        minimum: 0
+        type: integer
+    required:
+    - name
+    - price
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductListResponse:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse'
+        type: array
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse:
+    properties:
+      category:
+        $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CategoryResponse'
+      category_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      price:
+        type: number
+      seller_id:
+        type: integer
+      stock:
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.UpdateCategoryRequest:
+    properties:
+      description:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.UpdateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      image_url:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        maxLength: 200
+        minLength: 2
+        type: string
+      price:
+        type: number
+      stock:
+        minimum: 0
+        type: integer
+    type: object
+  github_com_akbarwjyy_go-commerce-api_internal_product_dto.UpdateStockRequest:
+    properties:
+      action:
+        enum:
+        - add
+        - reduce
+        type: string
+      quantity:
+        type: integer
+    required:
+    - action
+    - quantity
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@go-commerce.com
+    name: Go-Commerce API Support
+  description: E-Commerce REST API with modular monolith architecture
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Go-Commerce API
+  version: "1.0"
+paths:
+  /admin/orders:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders with filters and pagination (Admin only)
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by status
+        enum:
+        - PENDING
+        - PAID
+        - SHIPPED
+        - COMPLETED
+        - CANCELLED
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all orders (Admin)
+      tags:
+      - Admin
+  /admin/payments:
+    get:
+      consumes:
+      - application/json
+      description: Get all payments with filters and pagination (Admin only)
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by status
+        enum:
+        - PENDING
+        - PROCESSING
+        - SUCCESS
+        - FAILED
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all payments (Admin)
+      tags:
+      - Admin
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT token
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_auth_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_auth_dto.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      summary: Login user
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout user and blacklist the token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout user
+      tags:
+      - Auth
+  /auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Get the profile of the currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_auth_dto.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current user profile
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user account
+      parameters:
+      - description: Register request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_auth_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_auth_dto.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      summary: Register new user
+      tags:
+      - Auth
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Get all product categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CategoryResponse'
+                  type: array
+              type: object
+      summary: Get all categories
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new product category (Admin only)
+      parameters:
+      - description: Create category request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new category
+      tags:
+      - Categories
+  /categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product category (Admin only)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete category
+      tags:
+      - Categories
+    get:
+      consumes:
+      - application/json
+      description: Get a single category by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      summary: Get category by ID
+      tags:
+      - Categories
+    put:
+      consumes:
+      - application/json
+      description: Update a product category (Admin only)
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update category request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update category
+      tags:
+      - Categories
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Get orders belonging to the current user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by status
+        enum:
+        - PENDING
+        - PAID
+        - SHIPPED
+        - COMPLETED
+        - CANCELLED
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my orders
+      tags:
+      - Orders
+  /orders/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a single order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get order by ID
+      tags:
+      - Orders
+  /orders/{id}/cancel:
+    post:
+      consumes:
+      - application/json
+      description: Cancel an order and restore stock
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel order
+      tags:
+      - Orders
+  /orders/{id}/payment:
+    get:
+      consumes:
+      - application/json
+      description: Get the payment associated with an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get payment by order ID
+      tags:
+      - Orders
+  /orders/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update the status of an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update status request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.UpdateOrderStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update order status
+      tags:
+      - Orders
+  /orders/checkout:
+    post:
+      consumes:
+      - application/json
+      description: Create a new order from cart items
+      parameters:
+      - description: Checkout request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.CheckoutRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_order_dto.OrderResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Checkout order
+      tags:
+      - Orders
+  /payments:
+    get:
+      consumes:
+      - application/json
+      description: Get payments belonging to the current user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by status
+        enum:
+        - PENDING
+        - PROCESSING
+        - SUCCESS
+        - FAILED
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my payments
+      tags:
+      - Payments
+    post:
+      consumes:
+      - application/json
+      description: Create a new payment for an order (triggers async processing)
+      parameters:
+      - description: Create payment request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.CreatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create payment
+      tags:
+      - Payments
+  /payments/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a single payment by its ID
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get payment by ID
+      tags:
+      - Payments
+  /payments/callback:
+    post:
+      consumes:
+      - application/json
+      description: Manual payment callback for testing purposes
+      parameters:
+      - description: Payment callback request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_payment_dto.PaymentCallbackRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Payment callback (Testing)
+      tags:
+      - Payments
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get all products with filters and pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      - description: Filter by category ID
+        in: query
+        name: category_id
+        type: integer
+      - description: Minimum price
+        in: query
+        name: min_price
+        type: number
+      - description: Maximum price
+        in: query
+        name: max_price
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      summary: Get all products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product (Seller/Admin only)
+      parameters:
+      - description: Create product request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new product
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product (Owner only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete product
+      tags:
+      - Products
+    get:
+      consumes:
+      - application/json
+      description: Get a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      summary: Get product by ID
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update a product (Owner only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update product request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update product
+      tags:
+      - Products
+  /products/{id}/stock:
+    patch:
+      consumes:
+      - application/json
+      description: Add or reduce product stock (Owner only)
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update stock request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.UpdateStockRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update product stock
+      tags:
+      - Products
+  /seller/products:
+    get:
+      consumes:
+      - application/json
+      description: Get products owned by the current seller
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_product_dto.ProductResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_akbarwjyy_go-commerce-api_internal_common_response.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get my products
+      tags:
+      - Seller
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
