@@ -23,6 +23,7 @@ This project implements a Modular Monolith pattern - mimicking microservices bou
 - **ORM:** GORM v2
 - **Caching:** Redis (Token Blacklist)
 - **Authentication:** JWT (HMAC/RSA)
+- **Documentation:** Swagger (swaggo)
 - **Infrastructure:** Docker & Docker Compose
 
 ##  Getting Started
@@ -37,7 +38,7 @@ This project implements a Modular Monolith pattern - mimicking microservices bou
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/akbar/go-commerce-api.git
+   git clone https://github.com/akbarwjyy/go-commerce-api.git
    cd go-commerce-api
    ```
 
@@ -57,46 +58,79 @@ This project implements a Modular Monolith pattern - mimicking microservices bou
    go run cmd/api/main.go
    ```
 
-5. **Test the API**
-   ```bash
-   curl http://localhost:8080/health
+5. **Access Swagger Documentation**
    ```
-## API Endpoints
+   http://localhost:8080/swagger/index.html
+   ```
 
-### Health Check
-```
-GET /health
-```
+## API Documentation
 
-### Auth
+### Swagger UI
+Interactive API documentation is available at:
 ```
-POST /api/v1/auth/register   - Register new user
-POST /api/v1/auth/login      - Login user
-POST /api/v1/auth/logout     - Logout (blacklist token)
-GET  /api/v1/auth/me         - Get current user profile (protected)
+http://localhost:8080/swagger/index.html
 ```
 
-### Products (Coming Soon)
-```
-GET    /api/v1/products
-POST   /api/v1/products
-GET    /api/v1/products/:id
-PUT    /api/v1/products/:id
-DELETE /api/v1/products/:id
-```
+### Swagger UI Documentation
 
-### Orders (Coming Soon)
-```
-GET  /api/v1/orders
-POST /api/v1/orders
-GET  /api/v1/orders/:id
-```
+![Swagger UI - Endpoints](docs/images/swagger2.png)
 
-### Payments (Coming Soon)
-```
-POST /api/v1/payments
-GET  /api/v1/payments/:id
-```
+![Swagger UI - API Overview](docs/images/swagger1.png)
+
+![Swagger UI - Request Testing](docs/images/swagger3.png)
+
+### Endpoints Overview
+
+#### Auth
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/v1/auth/register` | Register new user | ❌ |
+| POST | `/api/v1/auth/login` | Login user | ❌ |
+| POST | `/api/v1/auth/logout` | Logout (blacklist token) | ✅ |
+| GET | `/api/v1/auth/me` | Get current user profile | ✅ |
+
+#### Categories
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/v1/categories` | Get all categories | ❌ |
+| GET | `/api/v1/categories/:id` | Get category by ID | ❌ |
+| POST | `/api/v1/categories` | Create category | 🔐 Admin |
+| PUT | `/api/v1/categories/:id` | Update category | 🔐 Admin |
+| DELETE | `/api/v1/categories/:id` | Delete category | 🔐 Admin |
+
+#### Products
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/v1/products` | Get all products | ❌ |
+| GET | `/api/v1/products/:id` | Get product by ID | ❌ |
+| POST | `/api/v1/products` | Create product | 🔐 Seller |
+| PUT | `/api/v1/products/:id` | Update product | 🔐 Owner |
+| DELETE | `/api/v1/products/:id` | Delete product | 🔐 Owner |
+| PATCH | `/api/v1/products/:id/stock` | Update stock | 🔐 Owner |
+
+#### Orders
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/v1/orders/checkout` | Create order | ✅ |
+| GET | `/api/v1/orders` | Get my orders | ✅ |
+| GET | `/api/v1/orders/:id` | Get order by ID | ✅ |
+| PATCH | `/api/v1/orders/:id/status` | Update status | ✅ |
+| POST | `/api/v1/orders/:id/cancel` | Cancel order | ✅ |
+
+#### Payments
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/v1/payments` | Create payment | ✅ |
+| GET | `/api/v1/payments` | Get my payments | ✅ |
+| GET | `/api/v1/payments/:id` | Get payment by ID | ✅ |
+
+#### Admin
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/v1/admin/orders` | Get all orders | 🔐 Admin |
+| GET | `/api/v1/admin/payments` | Get all payments | 🔐 Admin |
+
+**Legend:** ❌ Public | ✅ Authenticated | 🔐 Role-based
 
 ## User Roles
 
