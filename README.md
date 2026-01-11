@@ -23,18 +23,42 @@ This project implements a Modular Monolith pattern - mimicking microservices bou
 - **ORM:** GORM v2
 - **Caching:** Redis (Token Blacklist)
 - **Authentication:** JWT (HMAC/RSA)
+- **Logging:** Zerolog (structured logging)
+- **Validation:** go-playground/validator with custom validators
+- **Testing:** testify/assert + testify/mock
 - **Documentation:** Swagger (swaggo)
 - **Infrastructure:** Docker & Docker Compose
 
-##  Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Go 1.21+
-- PostgreSQL
-- Redis
+- Docker & Docker Compose (recommended)
+- PostgreSQL (if running without Docker)
+- Redis (if running without Docker)
 
-### Installation
+### Quick Start with Docker
+
+```bash
+# Clone repository
+git clone https://github.com/akbarwjyy/go-commerce-api.git
+cd go-commerce-api
+
+# Start all services
+docker-compose up -d
+
+# Check logs
+docker-compose logs -f api
+```
+
+Services akan berjalan di:
+- **API:** http://localhost:8080
+- **Swagger:** http://localhost:8080/swagger/index.html
+- **PostgreSQL:** localhost:5432
+- **Redis:** localhost:6379
+
+### Manual Installation
 
 1. **Clone the repository**
    ```bash
@@ -63,15 +87,58 @@ This project implements a Modular Monolith pattern - mimicking microservices bou
    http://localhost:8080/swagger/index.html
    ```
 
+## Docker
+
+### Available Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# Start with pgAdmin (database management)
+docker-compose --profile tools up -d
+
+# Stop all services
+docker-compose down
+
+# View logs
+docker-compose logs -f api
+
+# Rebuild after code changes
+docker-compose up -d --build
+```
+
+## Testing
+
+```bash
+# Run all tests
+go test ./... -v
+
+# Run with coverage
+go test ./... -cover
+
+# Run specific package tests
+go test ./internal/auth/service/... -v
+```
+
+### Test Coverage
+
+| Package | Tests |
+|---------|-------|
+| `auth/service` | Entity, DTO, Role validation |
+| `product/service` | Entity methods, Stock management |
+| `order/service` | Status transitions, Calculations |
+| `pkg/validator` | Custom validators |
+
 ## API Documentation
 
 ### Swagger UI
-Interactive API documentation is available at:
+Interactive API documentation available at:
 ```
 http://localhost:8080/swagger/index.html
 ```
 
-### Swagger UI Documentation
+### Swagger UI Preview
 
 ![Swagger UI - Endpoints](docs/images/swagger2.png)
 
@@ -84,53 +151,53 @@ http://localhost:8080/swagger/index.html
 #### Auth
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/v1/auth/register` | Register new user | ❌ |
-| POST | `/api/v1/auth/login` | Login user | ❌ |
-| POST | `/api/v1/auth/logout` | Logout (blacklist token) | ✅ |
-| GET | `/api/v1/auth/me` | Get current user profile | ✅ |
+| POST | `/api/v1/auth/register` | Register new user | Public |
+| POST | `/api/v1/auth/login` | Login user | Public |
+| POST | `/api/v1/auth/logout` | Logout (blacklist token) | Required |
+| GET | `/api/v1/auth/me` | Get current user profile | Required |
 
 #### Categories
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/api/v1/categories` | Get all categories | ❌ |
-| GET | `/api/v1/categories/:id` | Get category by ID | ❌ |
-| POST | `/api/v1/categories` | Create category | 🔐 Admin |
-| PUT | `/api/v1/categories/:id` | Update category | 🔐 Admin |
-| DELETE | `/api/v1/categories/:id` | Delete category | 🔐 Admin |
+| GET | `/api/v1/categories` | Get all categories | Public |
+| GET | `/api/v1/categories/:id` | Get category by ID | Public |
+| POST | `/api/v1/categories` | Create category | Admin |
+| PUT | `/api/v1/categories/:id` | Update category | Admin |
+| DELETE | `/api/v1/categories/:id` | Delete category | Admin |
 
 #### Products
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/api/v1/products` | Get all products | ❌ |
-| GET | `/api/v1/products/:id` | Get product by ID | ❌ |
-| POST | `/api/v1/products` | Create product | 🔐 Seller |
-| PUT | `/api/v1/products/:id` | Update product | 🔐 Owner |
-| DELETE | `/api/v1/products/:id` | Delete product | 🔐 Owner |
-| PATCH | `/api/v1/products/:id/stock` | Update stock | 🔐 Owner |
+| GET | `/api/v1/products` | Get all products | Public |
+| GET | `/api/v1/products/:id` | Get product by ID | Public |
+| POST | `/api/v1/products` | Create product | Seller |
+| PUT | `/api/v1/products/:id` | Update product | Owner |
+| DELETE | `/api/v1/products/:id` | Delete product | Owner |
+| PATCH | `/api/v1/products/:id/stock` | Update stock | Owner |
 
 #### Orders
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/v1/orders/checkout` | Create order | ✅ |
-| GET | `/api/v1/orders` | Get my orders | ✅ |
-| GET | `/api/v1/orders/:id` | Get order by ID | ✅ |
-| PATCH | `/api/v1/orders/:id/status` | Update status | ✅ |
-| POST | `/api/v1/orders/:id/cancel` | Cancel order | ✅ |
+| POST | `/api/v1/orders/checkout` | Create order | Required |
+| GET | `/api/v1/orders` | Get my orders | Required |
+| GET | `/api/v1/orders/:id` | Get order by ID | Required |
+| PATCH | `/api/v1/orders/:id/status` | Update status | Required |
+| POST | `/api/v1/orders/:id/cancel` | Cancel order | Required |
 
 #### Payments
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/v1/payments` | Create payment | ✅ |
-| GET | `/api/v1/payments` | Get my payments | ✅ |
-| GET | `/api/v1/payments/:id` | Get payment by ID | ✅ |
+| POST | `/api/v1/payments` | Create payment | Required |
+| GET | `/api/v1/payments` | Get my payments | Required |
+| GET | `/api/v1/payments/:id` | Get payment by ID | Required |
 
 #### Admin
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/api/v1/admin/orders` | Get all orders | 🔐 Admin |
-| GET | `/api/v1/admin/payments` | Get all payments | 🔐 Admin |
+| GET | `/api/v1/admin/orders` | Get all orders | Admin |
+| GET | `/api/v1/admin/payments` | Get all payments | Admin |
 
-**Legend:** ❌ Public | ✅ Authenticated | 🔐 Role-based
+**Legend:** Public (no auth) | Required (authenticated) | Role-based (specific role)
 
 ## User Roles
 
