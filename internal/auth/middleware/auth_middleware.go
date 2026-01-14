@@ -20,14 +20,20 @@ func AuthMiddleware(jwtService *utils.JWTService, authService service.AuthServic
 			return
 		}
 
-		// Parse Bearer token
+		// Parse token - support both "Bearer <token>" and plain "<token>" format
+		var token string
 		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
+		if len(parts) == 2 && parts[0] == "Bearer" {
+			// Format: "Bearer <token>"
+			token = parts[1]
+		} else if len(parts) == 1 {
+			// Format: plain token (for Swagger UI compatibility)
+			token = parts[0]
+		} else {
 			response.Unauthorized(ctx, "Invalid authorization format. Use: Bearer <token>")
 			ctx.Abort()
 			return
 		}
-		token := parts[1]
 
 		// Cek apakah token ada di blacklist
 		if authService.IsTokenBlacklisted(token) {
