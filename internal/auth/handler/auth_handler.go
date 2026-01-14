@@ -20,8 +20,17 @@ func NewAuthHandler(authService service.AuthService) *AuthHandler {
 	return &AuthHandler{authService: authService}
 }
 
-// Register menangani registrasi user baru
-// POST /api/v1/auth/register
+// Register godoc
+// @Summary      Register new user
+// @Description  Register a new user account
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.RegisterRequest true "Register request"
+// @Success      201 {object} response.APIResponse{data=dto.AuthResponse}
+// @Failure      400 {object} response.APIResponse
+// @Failure      409 {object} response.APIResponse
+// @Router       /auth/register [post]
 func (h *AuthHandler) Register(ctx *gin.Context) {
 	var req dto.RegisterRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -42,8 +51,17 @@ func (h *AuthHandler) Register(ctx *gin.Context) {
 	response.Created(ctx, "User registered successfully", result)
 }
 
-// Login menangani login user
-// POST /api/v1/auth/login
+// Login godoc
+// @Summary      Login user
+// @Description  Authenticate user and return JWT token
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.LoginRequest true "Login request"
+// @Success      200 {object} response.APIResponse{data=dto.AuthResponse}
+// @Failure      400 {object} response.APIResponse
+// @Failure      401 {object} response.APIResponse
+// @Router       /auth/login [post]
 func (h *AuthHandler) Login(ctx *gin.Context) {
 	var req dto.LoginRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -64,8 +82,16 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 	response.OK(ctx, "Login successful", result)
 }
 
-// Logout menangani logout user
-// POST /api/v1/auth/logout
+// Logout godoc
+// @Summary      Logout user
+// @Description  Logout user and blacklist the token
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} response.APIResponse
+// @Failure      401 {object} response.APIResponse
+// @Router       /auth/logout [post]
 func (h *AuthHandler) Logout(ctx *gin.Context) {
 	// Ambil token dari header Authorization
 	authHeader := ctx.GetHeader("Authorization")
@@ -90,8 +116,17 @@ func (h *AuthHandler) Logout(ctx *gin.Context) {
 	response.OK(ctx, "Logout successful", nil)
 }
 
-// GetProfile menangani request untuk mendapatkan profil user yang sedang login
-// GET /api/v1/auth/me
+// GetProfile godoc
+// @Summary      Get current user profile
+// @Description  Get the profile of the currently authenticated user
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} response.APIResponse{data=dto.UserResponse}
+// @Failure      401 {object} response.APIResponse
+// @Failure      404 {object} response.APIResponse
+// @Router       /auth/me [get]
 func (h *AuthHandler) GetProfile(ctx *gin.Context) {
 	// User ID diambil dari context (diset oleh middleware)
 	userID, exists := ctx.Get("userID")
