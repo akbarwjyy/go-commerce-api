@@ -1,3 +1,4 @@
+// Package response provides standard API response helpers
 package response
 
 import (
@@ -6,15 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// APIResponse adalah struktur standar untuk semua response API
+// APIResponse is the standard API response structure
 type APIResponse struct {
-	Success bool        `json:"success"`
-	Message string      `json:"message,omitempty"`
+	Success bool        `json:"success" example:"true"`
+	Message string      `json:"message" example:"Operation successful"`
 	Data    interface{} `json:"data,omitempty"`
 	Error   interface{} `json:"error,omitempty"`
 }
 
-// Success mengirim response sukses
+// Success mengirim response sukses dengan data
 func Success(ctx *gin.Context, statusCode int, message string, data interface{}) {
 	ctx.JSON(statusCode, APIResponse{
 		Success: true,
@@ -32,37 +33,37 @@ func Error(ctx *gin.Context, statusCode int, message string, err interface{}) {
 	})
 }
 
-// OK adalah shorthand untuk response 200
+// OK mengirim response sukses 200
 func OK(ctx *gin.Context, message string, data interface{}) {
 	Success(ctx, http.StatusOK, message, data)
 }
 
-// Created adalah shorthand untuk response 201
+// Created mengirim response sukses 201
 func Created(ctx *gin.Context, message string, data interface{}) {
 	Success(ctx, http.StatusCreated, message, data)
 }
 
-// BadRequest adalah shorthand untuk response 400
+// BadRequest mengirim response error 400
 func BadRequest(ctx *gin.Context, message string, err interface{}) {
 	Error(ctx, http.StatusBadRequest, message, err)
 }
 
-// Unauthorized adalah shorthand untuk response 401
+// Unauthorized mengirim response error 401
 func Unauthorized(ctx *gin.Context, message string) {
 	Error(ctx, http.StatusUnauthorized, message, nil)
 }
 
-// Forbidden adalah shorthand untuk response 403
+// Forbidden mengirim response error 403
 func Forbidden(ctx *gin.Context, message string) {
 	Error(ctx, http.StatusForbidden, message, nil)
 }
 
-// NotFound adalah shorthand untuk response 404
+// NotFound mengirim response error 404
 func NotFound(ctx *gin.Context, message string) {
 	Error(ctx, http.StatusNotFound, message, nil)
 }
 
-// InternalServerError adalah shorthand untuk response 500
+// InternalServerError mengirim response error 500
 func InternalServerError(ctx *gin.Context, message string, err interface{}) {
 	Error(ctx, http.StatusInternalServerError, message, err)
 }
